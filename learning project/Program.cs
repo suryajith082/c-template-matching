@@ -27,9 +27,10 @@ namespace learning_project
 
 
         [DllImport("C:\\Users\\Acer PC\\source\\repos\\templateMatching\\x64\\Debug\\templateMatching.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int res([MarshalAs(UnmanagedType.LPStr)] String a, [MarshalAs(UnmanagedType.LPStr)]String b);
-        public static void Main()
+        public unsafe static extern void res([MarshalAs(UnmanagedType.LPStr)] String a, [MarshalAs(UnmanagedType.LPStr)]String b, int* x, int* y);
+        public unsafe static void Main()
         {
+            int x, y;
             Console.WriteLine("Starting the process...");
             Thread.Sleep(5000);
 
@@ -47,11 +48,14 @@ namespace learning_project
 
             captureBitmap.Save(@"C:\Users\Acer PC\Desktop\New folder\Capture.jpg", ImageFormat.Jpeg);
 
-            int ret = res("C:\\Users\\Acer PC\\Desktop\\New folder\\Capture.jpg", "C:\\Users\\Acer PC\\Desktop\\New folder\\newgoogle.jpg");
-            Console.WriteLine("Return Value: " + ret);
+            res("C:\\Users\\Acer PC\\Desktop\\New folder\\Capture.jpg", "C:\\Users\\Acer PC\\Desktop\\New folder\\newgoogle.jpg",&x,&y);
+            Console.WriteLine(x);
+            Console.WriteLine(y);
             Console.ReadLine();
-            SetCursorPos(500, 500);
-            mouse_event( MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
+            int xpos=x+10;
+            int ypos=y+10;
+            SetCursorPos(xpos, ypos);
+            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
             Console.ReadLine();
             Console.ReadLine();
             File.Delete("C:\\Users\\Acer PC\\Desktop\\New folder\\Capture.jpg");
